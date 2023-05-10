@@ -45,7 +45,8 @@ build: build-base
 	for image in $(IMAGES) ; do TAG=$(TAG) make -C $$image build-image; done
 
 deploy-docker: build
-	bash -c "trap 'make undeploy-docker' EXIT; PREFIX=${PREFIX} TAG=$(TAG) docker-compose up"
+	# bash -c "trap 'make undeploy-docker' EXIT; PREFIX=${PREFIX} TAG=$(TAG) docker-compose up"
+	bash -c "trap 'make undeploy-docker' EXIT; PREFIX=${PREFIX} TAG=$(TAG) docker compose up"
 
 undeploy-docker:
 	PREFIX=$(PREFIX) docker-compose down
@@ -135,3 +136,14 @@ undeployCF: cf_target
 	$(MAKE) cf_ds_postgres
 	$(MAKE) cf_ds_rabbitmq
 	$(MAKE) cf_ds_redis
+
+helm_deployment:
+	helm upgrade --install --create-namespace --namespace v1-auth-${{ inputs.environment }} -f ./helm/values.yaml \
+	--set v1auth.project=v1-auth \
+	--set v1auth.stage=${{ inputs.environment }} \
+	--set v1auth.service=v1-auth-${{ inputs.environment }} \
+	--set image.app="volusion-docker.jfrog.io/v1-auth" \
+	--set image.tag=${{ inputs.package_version }} \
+	--set metadata.name=v1-auth-${{ inputs.environment }} \
+	--set name=v1-auth-${{ inputs.environment }} \
+	v1-auth-${{ inputs.environment }} ./helm

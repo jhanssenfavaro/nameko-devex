@@ -1,0 +1,19 @@
+{
+  "CN": " Example Company Intermediate CA",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "US",
+      "L": "New York",
+      "ST": "New York",
+      "O": "Example Company",
+      "OU": "Example Company Intermediate CA"
+    }
+  ],
+  "ca": {
+    "expiry": "42720h"
+  }
+}

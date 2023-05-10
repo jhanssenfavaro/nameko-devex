@@ -1,4 +1,8 @@
-FROM python:3.7-slim-stretch as base
+# FROM python:3.7-slim-stretch as base
+FROM python:3.9 as base
+
+#FIRST FIX
+# RUN sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list
 
 RUN apt-get update && \
     apt-get install --yes curl netcat

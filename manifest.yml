@@ -14,33 +14,36 @@ defaults: &defaults
     APP_ENV: HelloWorld
 
 # Majestic Monolith - All in One
-applications:
-  - name: nex-nameko-devex
-    <<: *defaults
-    no-route: false
-    health-check-type: port
-    command: FASTAPI=X ./cf_run.sh products.service orders.service
-    # command: ./cf_run.sh products.service orders.service gateway.service
-
-# Majestic Microservice (need to uncomment above)
 # applications:
-#   - name: nex-namekoexample
+#   - name: nex-nameko-devex
 #     <<: *defaults
 #     no-route: false
 #     health-check-type: port
-#     memory: 128M
-#     command: bash ./cf_run.sh gateway.service 
+#     command: FASTAPI=X ./cf_run.sh products.service orders.service
+#     # command: ./cf_run.sh products.service orders.service gateway.service
 
-#   - name: nex-namekoexample-orders
-#     <<: *defaults
-#     no-route: true
-#     health-check-type: process
-#     memory: 128M
-#     command: bash ./cf_run.sh orders.service
+# Majestic Microservice (need to uncomment above)
+applications:
+  - name: nex-namekoexample
+    <<: *defaults
+    no-route: false
+    health-check-type: port
+    memory: 128M
+    command: bash ./cf_run.sh gateway.service 
+    timeout: 300
 
-#   - name: nex-namekoexample-products
-#     <<: *defaults
-#     no-route: true
-#     health-check-type: process
-#     memory: 128M
-#     command: bash ./cf_run.sh products.service
+  - name: nex-namekoexample-orders
+    <<: *defaults
+    no-route: true
+    health-check-type: process
+    memory: 128M
+    command: bash ./cf_run.sh orders.service
+    timeout: 300
+
+  - name: nex-namekoexample-products
+    <<: *defaults
+    no-route: true
+    health-check-type: process
+    memory: 128M
+    command: bash ./cf_run.sh products.service
+    timeout: 300
